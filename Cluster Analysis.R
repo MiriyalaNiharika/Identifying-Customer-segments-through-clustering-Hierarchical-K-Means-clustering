@@ -1,10 +1,3 @@
-#Niharika Miriyala
-#PGID: 12110013
-
-#a)
-#Refer to the PDF document for explanation
-
-#b)
 setwd('C:/Users/Niharika/Documents/R/Project-1_EastWestAirlines') #Setting the working directory
 
 df <- read.csv("EastWestAirlines.csv",header=TRUE) #Reading the required CSV file
@@ -14,7 +7,7 @@ dim(df) # Gives dimension of the dataframe in the file
 Airlines_Data <- df[c(-1,-12)] 
 head(Airlines_Data)
 
-#Standardizing the data before performing 'Hierarchical Clustering'
+#Hierarchical Clustering- Using Euclidean & ward's:
 
 standardized_data <- scale(Airlines_Data) # Standardizing all the columns
 
@@ -22,12 +15,6 @@ distance <- dist(standardized_data, method = "euclidean") # Computing distance u
 Clusters <- hclust(distance, method="ward.D2") # Running hierarchical clustering using Ward's method
 plot(Clusters) # displaying dendrogram
 
-#From the plot of dendogram we see that as there are larger numbers of observations, we see many
-#data points are cluttered at the lower height region of 0-20. Also as it's hard to interpret those
-#many number of clusters. We go to higher level of height, say above 80 to get fair number of clusters.
-
-#Also, because our business problem is to identify the categories of customers to target for mileage offers
-#it's ideal to go for 3 clusters that have frequent,not so frequent & normal travelers.
 
 # cutting tree into 3 clusters
 abline(h=88,col="red",lty=2)
@@ -57,9 +44,6 @@ colnames(membership)[1] <- "Cluster ID"
 Hierarchical_Clusters <- cbind(Airlines_Data,membership)
 write.csv(Hierarchical_Clusters,file="Hierarchical_Clusters.csv")
 
-
-#c)
-
 #Finding the mean of all the values
 Cluster_average <- aggregate(standardized_data,list(groups),mean)
 Cluster_average
@@ -80,9 +64,8 @@ x
 Airlines_final_summmary <- round_df(Airlines_Transpose, 2)
 Airlines_final_summmary
 
-#d) To check the stability of clusters, remove a random 5% of the data (by 
+# To check the stability of clusters, remove a random 5% of the data (by 
 #taking a random sample of 95% of the records), and repeat the analysis. 
-#Does the same picture emerge?
 
 install.packages("dplyr")
 library(dplyr)
@@ -106,11 +89,9 @@ table(groups_Sample) #number of observations in each of 3 clusters
 plot(Sample_Clusters, cex = 0.6) # plot tree
 rect.hclust(Sample_Clusters, k = 3, border = 2:5) # add rectangle around the 3 clusters
 
-#e)
-
+#K-means clustering
 standardized_data <- scale(Airlines_Data) # Standardizing all the columns
 
-#K-means clustering
 fit <- kmeans(standardized_data, centers=3, iter.max=10, nstart=10) #setting initial centers to 3
 fit
 
@@ -140,6 +121,7 @@ plot(1:6, Cluster_Variability, type="b", xlab="Number of clusters", ylab="Within
 #would be ideal for our case
 
 #Using factoextra package to determine ideal number of clusters:
+
 install.packages("factoextra")
 library(factoextra)
 
@@ -198,10 +180,5 @@ Kmeans_roundoff_summary
 #in the last two months. Only positive point of this cluster is that, customers in this segment have next
 #highest miles earned through rewards Credit.
 
-#f)
-#Refer to PDF document for explanation
-
-#g)
-#Refer to PDF document for explanation
 
 
