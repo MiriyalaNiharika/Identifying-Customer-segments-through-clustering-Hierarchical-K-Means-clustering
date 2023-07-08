@@ -1,1 +1,1 @@
-# Identifying-Customer-segments-through-clustering-Hierarchical-K-Means-clustering
+# Identifying Customer segments through clustering Hierarchical & K-Means clustering
